@@ -1,0 +1,45 @@
+# ============================================================
+#  PENGATURAN UTAMA - edit file ini sesuai channel kamu
+# ============================================================
+
+channel:
+  niche: "Fakta unik sains dan teknologi"   # GANTI sesuai niche channel kamu
+  language: "Bahasa Indonesia"
+  audience: "penonton Indonesia usia 15-35"
+  tone: "santai, penuh rasa ingin tahu, mudah dipahami"
+  extra_rules: ""   # aturan tambahan, contoh: "jangan bahas politik dan agama"
+
+video:
+  format: "shorts"            # "shorts" (9:16) atau "long" (16:9, untuk jam tayang)
+  target_seconds: 45          # shorts: 35-55 | long: 300-480
+  max_shorts_seconds: 59      # batas aman agar tetap terhitung Shorts
+  voice: "id-ID-ArdiNeural"   # suara pria. Alternatif wanita: id-ID-GadisNeural
+  voice_rate: "+0%"           # kecepatan suara, contoh "+10%" atau "-5%"
+  tts_fallback_lang: "id"     # bahasa cadangan jika edge-tts gagal
+  font_file: "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+  uploads_per_run: 1          # jumlah video per eksekusi workflow
+
+upload:
+  # Mulai dengan "private" supaya kamu bisa cek kualitas dulu di YouTube Studio.
+  # Setelah yakin, ganti jadi "public".
+  privacy: "private"          # private | unlisted | public
+  category_id: "27"           # 27 = Education, 28 = Science & Tech, 24 = Entertainment
+  language_code: "id"
+  made_for_kids: false
+  contains_synthetic_media: false   # isi true jika visual/suara meniru orang/peristiwa nyata secara realistis
+  default_hashtags: ["#fakta", "#faktaunik"]
+
+# Syarat monetisasi (YouTube Partner Program). Ubah di sini jika YouTube mengubah aturan.
+monetization:
+  early_tier:                       # fan funding, dll
+    subscribers: 500
+    watch_hours: 3000               # jam tayang video panjang, 12 bulan terakhir
+    shorts_views: 3000000           # views Shorts, 90 hari terakhir
+  full_tier_now:                    # bagi hasil iklan, aturan lama
+    subscribers: 1000
+    watch_hours: 4000
+    shorts_views: 10000000
+  full_tier_from_2027_02_01:        # bagi hasil iklan, pelamar baru mulai 1 Feb 2027
+    subscribers: 1000
+    watch_hours: 8000
+    shorts_views: 20000000
