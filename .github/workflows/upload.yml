@@ -21,6 +21,9 @@ jobs:
   run:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: youtube-autopilot
     steps:
       - uses: actions/checkout@v4
 
@@ -28,6 +31,7 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
+          cache-dependency-path: youtube-autopilot/requirements.txt
 
       - name: Pasang ffmpeg dan font
         run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
@@ -58,4 +62,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: video-uji-coba
-          path: output/*.mp4
+          path: youtube-autopilot/output/*.mp4
