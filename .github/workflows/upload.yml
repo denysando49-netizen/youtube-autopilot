@@ -1,0 +1,61 @@
+name: Upload video otomatis
+
+on:
+  schedule:
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Uji coba: buat video tanpa upload"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: yt-upload
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Pasang ffmpeg dan font
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
+
+      - name: Pasang dependensi Python
+        run: pip install -r requirements.txt
+
+      - name: Buat video dan upload
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: python -m src.pipeline
+
+      - name: Simpan riwayat topik
+        if: ${{ !inputs.dry_run }}
+        run: |
+          git config user.name "yt-autopilot"
+          git config user.email "yt-autopilot@users.noreply.github.com"
+          git add data/history.json
+          git diff --cached --quiet || (git commit -m "Update riwayat upload" && git push)
+
+      - name: Simpan video uji coba
+        if: ${{ inputs.dry_run }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-uji-coba
+          path: output/*.mp4
